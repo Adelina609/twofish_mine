@@ -14,8 +14,6 @@ public class TwofishWrapper {
 
     }
 
-
-    //TODO убрать сбс полностью из проекта?
     public static byte[] processCBC(byte[] input) {
 
         final byte[] out = new byte[input.length];

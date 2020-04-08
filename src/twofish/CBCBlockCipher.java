@@ -170,6 +170,7 @@ public class CBCBlockCipher
      * @exception IllegalStateException if the cipher isn't initialised.
      * @return the number of bytes processed and produced.
      */
+
     private int encryptBlock(
             byte[]      in,
             int         inOff,
