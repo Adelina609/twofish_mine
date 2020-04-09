@@ -1,7 +1,5 @@
 package twofish.exceptions;
 
-import twofish.CryptoException;
-
 /**
  * this exception is thrown whenever we find something we don't expect in a
  * message.

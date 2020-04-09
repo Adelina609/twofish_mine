@@ -1,20 +1,22 @@
 package twofish;
 
+import twofish.exceptions.CryptoException;
+
 public class TwofishWrapper {
 
-    static CBCBlockCipher cipher;
+    public static PCBCBlockCipher cipher;
 
     public TwofishWrapper(byte[] key, boolean forEncryption, byte[] IV) {
 
         final TwofishEngine tfe = new TwofishEngine();
-        cipher = new CBCBlockCipher(tfe);
+        cipher = new PCBCBlockCipher(tfe);
         final KeyParameter kp = new KeyParameter(key);
         final ParametersWithIV piv = new ParametersWithIV(kp, IV);
         cipher.init(forEncryption, piv);
 
     }
 
-    public static byte[] processCBC(byte[] input) {
+    public byte[] processPCBC(byte[] input) {
 
         final byte[] out = new byte[input.length];
 

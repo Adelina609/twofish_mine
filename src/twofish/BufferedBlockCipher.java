@@ -18,11 +18,14 @@ public class BufferedBlockCipher
     protected byte[]        buf;
     protected int           bufOff;
 
+
     protected boolean       forEncryption;
     protected BlockCipher   cipher;
 
     protected boolean       partialBlockOkay;
     protected boolean       pgpCFB;
+    private static final int blockSize = 16;  // bytes = 128 bits
+
 
     /**
      * constructor for subclasses
@@ -41,7 +44,7 @@ public class BufferedBlockCipher
     {
         this.cipher = cipher;
 
-        buf = new byte[cipher.getBlockSize()];
+        buf = new byte[blockSize];
         bufOff = 0;
 
         //
@@ -52,7 +55,7 @@ public class BufferedBlockCipher
 
         pgpCFB = (idx > 0 && name.startsWith("PGP", idx));
 
-        if (pgpCFB || cipher instanceof StreamCipher)
+        if (pgpCFB)
         {
             partialBlockOkay = true;
         }
@@ -100,7 +103,7 @@ public class BufferedBlockCipher
      */
     public int getBlockSize()
     {
-        return cipher.getBlockSize();
+        return blockSize;
     }
 
     /**
@@ -121,7 +124,7 @@ public class BufferedBlockCipher
         {
             if (forEncryption)
             {
-                leftOver = total % buf.length - (cipher.getBlockSize() + 2);
+                leftOver = total % buf.length - (blockSize + 2);
             }
             else
             {

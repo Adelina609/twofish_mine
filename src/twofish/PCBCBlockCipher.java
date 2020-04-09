@@ -7,14 +7,15 @@ import java.util.Arrays;
 /**
  * implements Cipher-Block-Chaining (CBC) mode on top of a simple cipher.
  */
-public class CBCBlockCipher
+public class PCBCBlockCipher
         implements BlockCipher
 {
     private byte[]          IV;
-    private byte[]          cbcV;
-    private byte[]          cbcNextV;
+    private byte[] pcbcV;
+    private byte[] pcbcNextV;
 
-    private int             blockSize;
+    private static final int blockSize = 16;  // bytes = 128 bits
+
     private BlockCipher     cipher = null;
     private boolean         encrypting;
 
@@ -23,15 +24,14 @@ public class CBCBlockCipher
      *
      * @param cipher the block cipher to be used as the basis of chaining.
      */
-    public CBCBlockCipher(
+    public PCBCBlockCipher(
             BlockCipher cipher)
     {
         this.cipher = cipher;
-        this.blockSize = cipher.getBlockSize();
 
         this.IV = new byte[blockSize];
-        this.cbcV = new byte[blockSize];
-        this.cbcNextV = new byte[blockSize];
+        this.pcbcV = new byte[blockSize];
+        this.pcbcNextV = new byte[blockSize];
     }
 
     /**
@@ -118,11 +118,6 @@ public class CBCBlockCipher
      *
      * @return the block size of the underlying cipher.
      */
-    public int getBlockSize()
-    {
-        return cipher.getBlockSize();
-    }
-
     /**
      * Process one block of input from the array in and write it to
      * the out array.
@@ -152,8 +147,8 @@ public class CBCBlockCipher
      */
     public void reset()
     {
-        System.arraycopy(IV, 0, cbcV, 0, IV.length);
-        Arrays.fill(cbcNextV, (byte)0);
+        System.arraycopy(IV, 0, pcbcV, 0, IV.length);
+        Arrays.fill(pcbcNextV, (byte)0);
 
         cipher.reset();
     }
@@ -184,20 +179,20 @@ public class CBCBlockCipher
         }
 
         /*
-         * XOR the cbcV and the input,
-         * then encrypt the cbcV
+         * XOR the pcbcV and the input,
+         * then encrypt the pcbcV
          */
         for (int i = 0; i < blockSize; i++)
         {
-            cbcV[i] ^= in[inOff + i];
+            pcbcV[i] ^= in[inOff + i];
         }
 
-        int length = cipher.processBlock(cbcV, 0, out, outOff);
+        int length = cipher.processBlock(pcbcV, 0, out, outOff);
 
         /*
-         * copy ciphertext to cbcV
+         * copy ciphertext to pcbcV
          */
-        System.arraycopy(out, outOff, cbcV, 0, cbcV.length);
+        System.arraycopy(out, outOff, pcbcV, 0, pcbcV.length);
 
         return length;
     }
@@ -226,16 +221,16 @@ public class CBCBlockCipher
             throw new DataLengthException("input buffer too short");
         }
 
-        System.arraycopy(in, inOff, cbcNextV, 0, blockSize);
+        System.arraycopy(in, inOff, pcbcNextV, 0, blockSize);
 
         int length = cipher.processBlock(in, inOff, out, outOff);
 
         /*
-         * XOR the cbcV and the output
+         * XOR the pcbcV and the output
          */
         for (int i = 0; i < blockSize; i++)
         {
-            out[outOff + i] ^= cbcV[i];
+            out[outOff + i] ^= pcbcV[i];
         }
 
         /*
@@ -243,9 +238,9 @@ public class CBCBlockCipher
          */
         byte[]  tmp;
 
-        tmp = cbcV;
-        cbcV = cbcNextV;
-        cbcNextV = tmp;
+        tmp = pcbcV;
+        pcbcV = pcbcNextV;
+        pcbcNextV = tmp;
 
         return length;
     }
