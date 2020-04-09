@@ -1,7 +1,5 @@
 package twofish;
 
-import twofish.exceptions.DataLengthException;
-
 import java.util.Arrays;
 
 public class PCBCCipher
@@ -43,8 +41,7 @@ public class PCBCCipher
             byte[] in,
             int inOff,
             byte[] out,
-            int outOff)
-            throws DataLengthException, IllegalStateException {
+            int outOff) {
         return (encrypting) ? encryptBlock(in, inOff, out, outOff) : decryptBlock(in, inOff, out, outOff);
     }
 
@@ -59,11 +56,7 @@ public class PCBCCipher
             byte[] in,
             int inOff,
             byte[] out,
-            int outOff)
-            throws DataLengthException, IllegalStateException {
-        if ((inOff + blockSize) > in.length) {
-            throw new DataLengthException("input buffer too short");
-        }
+            int outOff) {
 
         for (int i = 0; i < blockSize; i++) {
             pcbcV[i] ^= in[inOff + i];
@@ -80,11 +73,7 @@ public class PCBCCipher
             byte[] in,
             int inOff,
             byte[] out,
-            int outOff)
-            throws DataLengthException, IllegalStateException {
-        if ((inOff + blockSize) > in.length) {
-            throw new DataLengthException("input buffer too short");
-        }
+            int outOff) {
 
         System.arraycopy(in, inOff, pcbcNextV, 0, blockSize);
 

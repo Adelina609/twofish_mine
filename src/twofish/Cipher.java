@@ -1,15 +1,11 @@
 package twofish;
 
-import twofish.exceptions.DataLengthException;
-
 public interface Cipher {
 
     void init(boolean forEncryption, byte[] key,
-              byte[] IV)
-            throws IllegalArgumentException;
+              byte[] IV);
 
-    int processBlock(byte[] in, int inOff, byte[] out, int outOff)
-            throws DataLengthException, IllegalStateException;
+    int processBlock(byte[] in, int inOff, byte[] out, int outOff);
 
     void reset();
 }

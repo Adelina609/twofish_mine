@@ -1,8 +1,5 @@
 package twofish;
 
-import twofish.exceptions.DataLengthException;
-import twofish.exceptions.OutputLengthException;
-
 public class ECBCipher {
     protected byte[] buf;
     protected int bufOff;
@@ -62,20 +59,12 @@ public class ECBCipher {
             int inOff,
             int len,
             byte[] out,
-            int outOff)
-            throws DataLengthException, IllegalStateException {
+            int outOff) {
         if (len < 0) {
             throw new IllegalArgumentException("Can't have a negative input length!");
         }
 
         int blockSize = this.getBlockSize();
-        int length = getUpdateOutputSize(len);
-
-        if (length > 0) {
-            if ((outOff + length) > out.length) {
-                throw new OutputLengthException("output buffer too short");
-            }
-        }
 
         int resultLen = 0;
         int gapLen = buf.length - bufOff;
@@ -112,20 +101,11 @@ public class ECBCipher {
     //последний блок данных, обработка
     public int doFinal(
             byte[] out,
-            int outOff)
-            throws DataLengthException, IllegalStateException {
+            int outOff) {
         try {
             int resultLen = 0;
 
-            if (outOff + bufOff > out.length) {
-                throw new OutputLengthException("output buffer too short for doFinal()");
-            }
-
             if (bufOff != 0) {
-                if (!partialBlockOkay) {
-                    throw new DataLengthException("data not block size aligned");
-                }
-
                 cipher.processBlock(buf, 0, buf, 0);
                 resultLen = bufOff;
                 bufOff = 0;

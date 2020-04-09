@@ -1,9 +1,5 @@
 package twofish;
 
-
-import twofish.exceptions.DataLengthException;
-import twofish.exceptions.OutputLengthException;
-
 public final class TwofishEngine
         implements Cipher {
     private static final byte[][] P = {
@@ -251,14 +247,6 @@ public final class TwofishEngine
             int outOff) {
         if (workingKey == null) {
             throw new IllegalStateException("Twofish not initialised");
-        }
-
-        if ((inOff + BLOCK_SIZE) > in.length) {
-            throw new DataLengthException("input buffer too short");
-        }
-
-        if ((outOff + BLOCK_SIZE) > out.length) {
-            throw new OutputLengthException("output buffer too short");
         }
 
         if (encrypting) {
