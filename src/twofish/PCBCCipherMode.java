@@ -2,24 +2,21 @@ package twofish;
 
 import java.util.Arrays;
 
-public class PCBCCipher
+public class PCBCCipherMode
         implements Cipher {
-    private byte[] IV;
-    private byte[] pcbcV;
-    private byte[] pcbcNextV;
 
-    private static final int blockSize = 16;  // bytes = 128 bits
+    private static final int blockSize = 16;  //128 бит
+    private byte[] IV = new byte[blockSize];
+    private byte[] pcbcV = new byte[blockSize];
+    private byte[] pcbcNextV = new byte[blockSize];
+
 
     private Cipher cipher = null;
     private boolean encrypting;
 
-    public PCBCCipher(
+    public PCBCCipherMode(
             Cipher cipher) {
         this.cipher = cipher;
-
-        this.IV = new byte[blockSize];
-        this.pcbcV = new byte[blockSize];
-        this.pcbcNextV = new byte[blockSize];
     }
 
     public void init(

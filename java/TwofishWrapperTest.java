@@ -54,7 +54,7 @@ public class TwofishWrapperTest {
             assertNotNull(encResult);
             assertNotNull(decResult);
             assertEquals(ptECB[i], toHexString(decResult).toUpperCase());
-            System.out.println("PT ECB: " + ptECB[i] + "\nDEC ECB: " + toHexString(decResult).toUpperCase());
+            System.out.println(i + " PT ECB: " + ptECB[i] + "\nENC ECB: " + toHexString(encResult).toUpperCase() + "\nDEC ECB: " + toHexString(decResult).toUpperCase());
         }
     }
 
@@ -77,7 +77,7 @@ public class TwofishWrapperTest {
             assertNotNull(encResult);
             assertNotNull(decResult);
             assertEquals(ptPCBC[i], toHexString(decResult).toUpperCase());
-            System.out.println("PT PCBC: " + ptPCBC[i] + "\nDEC PCBC: " + toHexString(decResult).toUpperCase());
+            System.out.println(i + " PT PCBC: " + ptPCBC[i] + "\nDEC PCBC: " + toHexString(decResult).toUpperCase());
         }
     }
 

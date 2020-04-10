@@ -1,6 +1,6 @@
 package twofish;
 
-public final class TwofishEngine
+public final class TwofishImplCipher
         implements Cipher {
     private static final byte[][] P = {
             {  // p0
@@ -198,7 +198,7 @@ public final class TwofishEngine
 
     private byte[] workingKey = null;
 
-    public TwofishEngine() {
+    public TwofishImplCipher() {
         //MDS матрица
         int[] m1 = new int[2];
         int[] mX = new int[2];
