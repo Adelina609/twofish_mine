@@ -55,8 +55,20 @@ public class PCBCCipherMode
             byte[] out,
             int outOff) {
 
-        for (int i = 0; i < blockSize; i++) {
+        int mod = in.length % blockSize;
+        int additionalLength =  mod != 0 ? blockSize - mod : 0;
+
+        byte padding = 0;
+        if (mod != 0) {
+            padding = (byte) (blockSize - mod);
+        }
+
+        for (int i = 0; i < blockSize + additionalLength; i++) {
             pcbcV[i] ^= in[inOff + i];
+
+            if (i > in.length){
+                pcbcV[i % blockSize] = padding;
+            }
         }
 
         int length = cipher.processBlock(pcbcV, 0, out, outOff);
