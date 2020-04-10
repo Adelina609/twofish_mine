@@ -4,11 +4,11 @@ public class TwofishWrapper {
 
     public static PCBCCipher cipher;
 
-    public TwofishWrapper(byte[] key, boolean forEncryption, byte[] IV) {
+    public TwofishWrapper(byte[] key, boolean isEncryption, byte[] IV) {
 
         final TwofishEngine tfe = new TwofishEngine();
         cipher = new PCBCCipher(tfe);
-        cipher.init(forEncryption, key, IV);
+        cipher.init(isEncryption, key, IV);
 
     }
 
@@ -22,10 +22,10 @@ public class TwofishWrapper {
 
     }
 
-    public static byte[] processECB(byte[] key, boolean forEncryption, byte[] input) {
+    public static byte[] processECB(byte[] key, boolean isEncryption, byte[] input) {
 
         final ECBCipher cipher = new ECBCipher(new TwofishEngine());
-        cipher.init(forEncryption, key);
+        cipher.init(isEncryption, key);
         final byte[] out = new byte[input.length];
 
         final int len1 = cipher.processBytes(input, 0, input.length, out, 0);

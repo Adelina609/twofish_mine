@@ -40,7 +40,6 @@ public class TwofishWrapperTest {
             "842FAB20072543FE95B148BA4AB39E2F"
     };
 
-
     @Test
     void testModeECB() {
 
@@ -55,6 +54,7 @@ public class TwofishWrapperTest {
             assertNotNull(encResult);
             assertNotNull(decResult);
             assertEquals(ptECB[i], toHexString(decResult).toUpperCase());
+            System.out.println("PT ECB: " + ptECB[i] + "\nDEC ECB: " + toHexString(decResult).toUpperCase());
         }
     }
 
@@ -77,6 +77,7 @@ public class TwofishWrapperTest {
             assertNotNull(encResult);
             assertNotNull(decResult);
             assertEquals(ptPCBC[i], toHexString(decResult).toUpperCase());
+            System.out.println("PT PCBC: " + ptPCBC[i] + "\nDEC PCBC: " + toHexString(decResult).toUpperCase());
         }
     }
 
